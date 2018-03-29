@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="build/react.js"></script>
+        <script src="build/react-dom.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.24/browser.min.js"></script>
+    </head>
+    <body>
+    <!--this div will for content rendering-->
+        <div id="area"></div>
+        <script type="text/babel">
+            // create your first React component
+            const HelloWorld = React.createClass({
+                // these are default react methods, react already knows how to handle
+                // it's good practice to define your prop types, by adding .isRequired, you can make that property required
+                propTypes: {
+                    name: React.PropTypes.string,
+                    isPerson: React.PropTypes.bool
+                },
+
+                // default props help in case there isn't one supplied (especially if it's required)
+                getDefaultProps: function() {
+                    return {
+                        name: 'Paige'
+                    }
+                },
+
+                getInitialState: function() {
+                    return {
+                        value: 1
+                    }
+                },
+
+                // this will only run once when the component has mounted, you can manipulate the original state here
+                componentDidMount: function() {
+
+                },
+
+                // for custom methods, it's recommend you use an underscore to differentiate
+                _addByOne: function() {
+                    this.setState({
+                        value: this.state.value + 1
+                    });
+                },
+
+                render: function() {
+                    let greeting = "World";
+
+                    // this way, if isPerson is equal to false, it wont' go through the process of rendering an unnecessary component
+                    if(this.props.isPerson){
+                        greeting = (<Person name={this.props.name} />);
+                    }
+                    return (
+                        // if you want multiple lines of stuff, it must be wrapped inside a larger div tag
+                        // the curly braces allow the greeting variable to be rendered regardless of what it is
+                        // curly braces enclose JS, even functions - don't include parantheses though unless you want it to run immediately on load
+                        <div>
+                            <h1>Hello {greeting}</h1>
+                            {this.state.value}
+                            <button onClick={this._addByOne}>Click Me</button>
+                        </div>
+                    )
+                }
+            });
+
+            const Person = React.createClass({
+
+                propTypes: {
+                    name: React.PropTypes.string
+                },
+
+                getDefaultProps: function() {
+                    return {
+                        name: 'Sean'
+                    }
+                },
+
+                render: function() {
+                    return (
+                            <span>{this.props.name}</span>
+                    )
+                }
+            });
+
+            ReactDOM.render(
+                    // using curly braces lets us pass in a true boolean or object instead of a string
+                    <HelloWorld isPerson={false} />,
+                    document.getElementById('area')
+            );
+        </script>
+    </body>
+</html>
